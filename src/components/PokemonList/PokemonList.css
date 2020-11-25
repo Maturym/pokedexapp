@@ -1,0 +1,142 @@
+
+.cards{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.card{
+  margin-bottom: 10px;
+}
+.card-img{
+  width: 200px;
+  height: 200px;
+}
+.card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: rgb(48, 45, 45);
+  border: 2px solid #bebebe;
+  border-radius: 4px;
+  padding: 15px 15px;
+  transition: all 0.2s ease-in-out;
+
+  -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 3px 3px 5px 0px rgba(104, 101, 101, 0.75);
+}
+.card:hover{
+  transform: translateY(-5px);
+}
+.card-tags{
+  margin-top: 15px;
+}
+.card-tag{
+  padding: 8px;
+  border-radius: 4px;
+}
+.card-tag:not(:first-child) {
+  margin-left: 5px;
+}
+.card-tag.background-color-water{
+  color: white;
+  background-color: #81c1f5;
+}
+.card-tag.background-color-grass{
+  color: white;
+  background-color: #6dd17b;
+}
+.card-tag.background-color-fighting{
+  color: white;
+  background-color: #e6c05a;
+}
+.card-tag.background-color-ghost{
+  color: white;
+  background-color: #7b62a3;
+}
+.card-tag.background-color-ground{
+  color: white;
+  background-color: brown;
+}
+.card-tag.background-color-dark{
+  color: white;
+  background-color: black;
+}
+.card-tag.background-color-normal{
+  color: white;
+  background-color: grey;
+}
+.card-tag.background-color-steel{
+  color: white;
+  background-color: #9eb7b8;
+}
+.card-tag.background-color-rock{
+  color: white;
+  background-color: #a38c21;
+}
+.card-tag.background-color-psychic{
+  color: white;
+  background-color: blueviolet;
+}
+.card-tag.background-color-fairy{
+  color: white;
+  background-color: #fdb9e9;
+}
+.card-tag.background-color-poison{
+  color: white;
+  background-color: #b97fc9;
+}
+.card-tag.background-color-ice{
+  color: white;
+  background-color: #51c4e7;
+}
+.card-tag.background-color-bug{
+  color: white;
+  background-color: #729f3f;
+}
+.card-tag.background-color-electric{
+  color: white;
+  background-color: #eed535;
+}
+.card-tag.background-color-flying{
+  color: white;
+  background-color: #3dc7ef;
+}
+.card-tag.background-color-fire{
+  color: white;
+  background-color: red;
+}
+
+@media (max-width: 1168px) {
+  .card{
+    width: 30vw;
+  }
+}
+@media (max-width: 772px) {
+  .card{
+    width: 200px;
+  }
+}
+@media (max-width: 706px) {
+  .card{
+    width: 350px;
+    margin: 15px auto;
+  }
+  .card-img{
+    width: 300px;
+    height: 300px;
+  }
+}
+
+
+@media (max-width: 430px) {
+  .card{
+    width: 250px;
+    margin: 15px auto;
+  }
+  .card-img{
+    width: 150px;
+    height: 150px;
+  }
+}

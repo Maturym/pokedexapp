@@ -1,38 +1,72 @@
-.App {
-  text-align: center;
+body,h3,h1,ul,h2,p, span{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+li{
+  list-style: none;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+a{
+  cursor: pointer;
+  text-decoration: none;
 }
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+button{
+  border: none;
+  outline: none;
+  background-color: transparent;
+  cursor: pointer;
+  padding: 15px;
+  border: 2px solid #bebebe;
+  border-radius: 8px;
+  margin-right: 15px;
+  color: #945d5d;
+  transition: all 0.5s ease-in-out;
+}
+.btn{
+  margin-top: 10px;
+  margin-bottom: 10px;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+button:hover{
+  background-color: #bebebe;
+}
+
+/* :checked{
+  background-color: #bebebe;
+} */
+button:focus{
+  background-color: #bebebe;
+}
+
+.container{
+  padding: 10px 120px;
+  margin: auto;
+  /* background: rgb(187,134,121);
+  background: linear-gradient(0deg, rgba(187,134,121,1) 0%, rgba(253,187,45,1) 100%); */
+  background-color: rgb(236, 236, 52, 0.4);
+  /* background: url('../img/Pokemon-Background-Designs40-earn-gold-here-40015982-1920-1080.jpg') no-repeat center center; */
+}
+
+.animation-wrapper{
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  background-color: rgb(236, 236, 52, 0.4);
+  padding-bottom: 150px;
+}
+.animation{
+  width: 350px;
+  height: 400px;
+  /* margin: 0 auto; */
 }
 
-.App-link {
-  color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
+@media (max-width: 614px) {
+  .container{
+    padding: 0;
+    padding-top: 15px;
   }
 }
