@@ -2,133 +2,273 @@ import React, { useState, useEffect } from 'react';
 import PokemonList from './components/PokemonList/PokemonList';
 import Navbar from './components/Navbar/Navbar';
 import Pagination from './components/Pagination/Pagination';
-import animation from '../src/img/pokemon-animation.gif'
-import axios from 'axios';
+import getData from './services/getData';
+import Animation from './components/Animation/Animation';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import './app.css';
+//import PokemonTypes from './components/PokemonTypes/PokemonTypes';
+import PokemonCard from './components/PokemonCard/PokemonCard';
+import Search from './components/Search/Search'
 
 
 function App() {
 
   const [pokemonData, setPokemonData] = useState([]);
   const [totalPosts, setTotalPosts] = useState(890)
-  const [pokemonType, setPokemonType] = useState('');
+  const [pokemonType, setPokemonType] = useState([]);
 
-  // const [nextURL, setNextURL] = useState('');
+  const [pokemonInfo,setPokemonInfo] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(1);
-  // const [prevURL, setPrevURL] = useState('');
+
+  const [search, setSearch] = useState([]);
+
+  const [input, setInput] = useState('');
+  
   const [postsPerPage, setPostsPerPage] = useState(20)
   const [loading, setLoading] = useState(true);
   const initialURL = 'https://pokeapi.co/api/v2/pokemon';
+  const allTypes = 'https://pokeapi.co/api/v2/type/';
+  const allLocation = 'https://pokeapi.co/api/v2/location/?offset=0&limit=780';
+
   const firstURL = `https://pokeapi.co/api/v2/pokemon?offset=0&limit=${postsPerPage}`;
 
   const lastURL = `https://pokeapi.co/api/v2/pokemon?offset=${totalPosts - postsPerPage}&limit=${postsPerPage}`;
 
-  const pageNumbers = [];
 
-      
-  const maxLeft = currentPage - 3 >= 1 ? currentPage - 3 : 1;
-  const maxRight = +(currentPage + 3) <= Math.ceil(totalPosts / postsPerPage) ? currentPage + 3 : Math.ceil(totalPosts / postsPerPage);
+  useEffect(() => {
+    updateData();   
+  },[])
 
-
-  
-  for (let i = maxLeft; i <=maxRight; i++){
-    pageNumbers.push(i)
-  }
-
-
-  async function fetchData(url) {
-    let pokemonInfo = await axios.get(url).then(res =>  res.data)
-    // setPrevURL(pokemonInfo.previous);
-    // setNextURL(pokemonInfo.next);
-    await loadingPokemons(pokemonInfo.results)
+  const  updateData = () => {
+    setCurrentPage(1);
+    setTotalPosts(890);
+    setLoading(true);
+    getData.fetchData(initialURL, async data => {
+      getData.loadingPokemons(data, setPokemonData)
+    });
     setLoading(false);
   }
 
-  
+  const openData = (number) => {
+
+    const indexOfLastPost = number*postsPerPage <= 890? number*postsPerPage: 890;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+
+    const slicedURLArray = pokemonType.slice(indexOfFirstPost, indexOfLastPost);
+
+    getData.loadingPokemons(slicedURLArray, data => {
+      const dataWithPokemons = [];
+      data.forEach(item => {
+        dataWithPokemons.push(item)
+      });
+
+      setPokemonData(dataWithPokemons);
+    })
+
+  }
+
+  const getPokemonData = async (id) => {
+    setLoading(true);
+    
+    getData.fetchData(`https://pokeapi.co/api/v2/pokemon/${id}`, await setPokemonInfo)
+    setLoading(false);
+  }
+
+  const fetchPokemonData = async ( url) => {
+    setLoading(true);
+    getData.fetchData(url, data => getData.loadingPokemons(data, setPokemonData))
+
+    setLoading(false);
+  }
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
   const last = async () => {
     setLoading(true);
-    let data = await axios.get(lastURL).then(res =>  res.data);
-    console.log(data.results);
-    await loadingPokemons(data.results);
-    setCurrentPage(Math.ceil(totalPosts/postsPerPage))
-    // setNextURL(data.next);
-    // setPrevURL(data.previous);
+    getData.fetchData(lastURL, async data => {
+      await getData.loadingPokemons(data, setPokemonData);
+      setCurrentPage(Math.ceil(totalPosts/postsPerPage))
+    })
     setLoading(false);
   };
 
   const first = async () => {
 
     setLoading(true);
-    let data = await axios.get(firstURL).then(res =>  res.data);
-    await loadingPokemons(data.results);
-    setCurrentPage(1)
-    // setNextURL(data.next);
-    // setPrevURL(data.previous);
+    getData.fetchData(firstURL, async data => {
+      await getData.loadingPokemons(data, setPokemonData);
+      setCurrentPage(1)
+    })
+    
     setLoading(false);
   }
 
-  useEffect(() => {
-    fetchData(initialURL);
-  },[])
+  const filterByType = (target) => {
+    setCurrentPage(1);
+    window.scrollTo(0,0);
 
-  const loadingPokemons = async data => {
-    let _pokemonData = await Promise.all(
-      data.map(async pokemon => {
-        let pokemonRecord = await axios.get(pokemon.url).then(res => res.data)
-        return pokemonRecord;
+    getData.fetchData(allTypes, ((results) => {
+      const typeName = results.find((item) => {
+        if (item.name === target ) {return item};
       })
-    )
-    setPokemonData(_pokemonData);
-  };
+      getData.fetchData(typeName.url, async ({ pokemon }) => {
+        const pokemonURLArray = []; 
+        pokemon.forEach(p => {
+          pokemonURLArray.push(p.pokemon)
+        })
+        setTotalPosts(pokemonURLArray.length);
+        setPokemonType(pokemonURLArray);
+        let currentPage = 1;
 
-  const fetchPokemonData = async (e) => {
-    const target = +e.target.textContent;
+        const indexOfLastPost = currentPage*postsPerPage <= 890? currentPage*postsPerPage: 890;
+        const indexOfFirstPost = indexOfLastPost - postsPerPage;
 
-    setCurrentPage(target);
+        const slicedURLArray = pokemonURLArray.slice(indexOfFirstPost, indexOfLastPost);
 
-    const indexOfLastPost = target*postsPerPage <= 890? target*postsPerPage: 890;
-    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+        //setPokemonType(slicedURLArray);
 
-    let data = await axios.get(`https://pokeapi.co/api/v2/pokemon?offset=${indexOfFirstPost}&limit=${postsPerPage}`).then(res => res.data)
+        getData.loadingPokemons(slicedURLArray, setPokemonData)        
+      })
+    }))
+  }
 
-    await loadingPokemons(data.results);
+  const filterByLocation = (target) => {
+    setCurrentPage(1);
+    setLoading(true);
+    window.scrollTo(0,0);
 
-    // setNextURL(data.next);
-    // setPrevURL(data.previous);
+    getData.fetchData(allLocation, (results) => {
+
+      const locationName = results.find(({ name }) => name.includes(target) );
+
+      if (locationName) {
+        getData.fetchData(locationName.url, (data) => {
+          const dataURL = data.areas[0].url;
+          getData.fetchData(dataURL, ({ pokemon_encounters }) => {
+
+            setTotalPosts(pokemon_encounters)
+            const pokemonByLocationURL = [];
+      
+            pokemon_encounters.forEach(({ pokemon }) => {
+              pokemonByLocationURL.push(pokemon);
+            })
+            getData.loadingPokemons(pokemonByLocationURL, setPokemonData)
+          })  
+        })           
+      }      
+    })
+    
     setLoading(false);
   }
+
+  const handleChange = () => {
+    //setSearch(e.target.value);
+    const filteredDataName = [];
+    getData.fetchData('https://pokeapi.co/api/v2/pokemon?offset=0&limit=890', data => {
+      const filteredData = data.filter(item => item.name.includes(input));
+      filteredData.forEach(item => filteredDataName.push(item.name));
+      setSearch(filteredDataName);
+      getData.loadingPokemons(filteredData, setPokemonData)      
+    })
+  }
+
+  const getEvent = (e) => {
+    const target = e.target.value.toLowerCase();
+    setInput(target);
+    const filteredDataName = [];
+    getData.fetchData('https://pokeapi.co/api/v2/pokemon?offset=0&limit=890', data => {
+      const filteredData = data.filter(item => item.name.includes(input));
+      filteredData.forEach(item => filteredDataName.push(item.name));
+      setSearch(filteredDataName);    
+    })
+  }
+
 
   return (
     
-      <>
-        { loading ? <div className="animation-wrapper">
-          <img className="animation" src={animation} /> 
-        </div> :
-        (
+      <BrowserRouter>
+
         <main className="container" >
-          <Navbar/>
-          <div className="btn">
-             {currentPage !== 1? <button onClick={first}>First</button>: null}
-             {pageNumbers.map(number => (
-                <button key={number}
-                onClick={(e) => {
-                  setCurrentPage(e.target.textContent)
-                  fetchPokemonData(e)}}>
-                    {number}
-                </button>
-             ))}
-            {currentPage !== Math.ceil(totalPosts / postsPerPage)? <button onClick={last}>Last</button>: null}
-          </div>
-          { loading ? <div className="animation-wrapper">
-          <img className="animation" src={animation} /> 
-        </div> :
-          <PokemonList  pokemonData={pokemonData}/>
-          }
+          <Route
+            path="/"
+            render ={() =>
+              <Navbar updateData={updateData} />
+            }
+          />
+            <Switch>            
+              <Route 
+                exact path='/pokedexapp'
+                render ={() => 
+                        <div className="main-container">
+                          <Pagination currentPage={currentPage} postsPerPage={postsPerPage} 
+                            totalPosts={totalPosts}
+                            paginate={paginate} 
+                            fetchPokemonData={fetchPokemonData} 
+                            first={first} last={last}
+                            openData={openData} 
+                            />
+                          { loading ? <Animation /> : 
+                            <PokemonList  pokemonData={pokemonData} filterByType={filterByType} getPokemonData={getPokemonData} />                        
+                          }
+                          </div>                 
+                }
+              />
+                <Route 
+                  path="/card"
+                  render ={() => pokemonInfo &&
+                    <PokemonCard  pokemonInfo={pokemonInfo} filterByType={filterByType} filterByLocation={filterByLocation}/>
+                  }
+                />
+            
+            <Route 
+                path='/type'
+                render ={() => 
+                  <div className="main-container">
+                      <Pagination currentPage={currentPage} postsPerPage={postsPerPage} 
+                        totalPosts={totalPosts}
+                        paginate={paginate} 
+                        fetchPokemonData={fetchPokemonData} 
+                        first={first} last={last}
+                        openData={openData} />
+                      { loading ? <Animation />: 
+                          <PokemonList  pokemonData={pokemonData} filterByType={filterByType} getPokemonData={getPokemonData}/>
+                      }
+                  </div>                  
+                }
+            />
+
+            <Route 
+                path='/location'
+                render ={() => 
+                  <div className="main-container">
+                      <Pagination currentPage={currentPage} postsPerPage={postsPerPage} 
+                        totalPosts={totalPosts}
+                        paginate={paginate} 
+                        first={first} last={last}
+                        fetchPokemonData={fetchPokemonData} 
+                        openData={openData} />
+                      { loading ? <Animation /> : 
+                          <PokemonList  pokemonData={pokemonData} filterByType={filterByType} getPokemonData={getPokemonData}/>
+                      }
+                  </div>                  
+                }
+            />
+
+            <Route 
+                path='/search'
+                render ={() => 
+                  <div className="main-container">
+                    <Search handleChange={handleChange} search={search} getEvent={getEvent}/>
+                    <PokemonList  pokemonData={pokemonData} filterByType={filterByType} getPokemonData={getPokemonData} />
+                  </div>                  
+                }
+            />
+
+          </Switch>
+
         </main >
-      )
-      }  
-      
-      </>
+      </BrowserRouter>
   );
 }
 

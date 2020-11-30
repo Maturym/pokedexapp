@@ -1,41 +1,16 @@
-
-.cards{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-.card{
-  margin-bottom: 10px;
-}
-.card-img{
-  width: 200px;
-  height: 200px;
-}
-.card{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: rgb(48, 45, 45);
-  border: 2px solid #bebebe;
-  border-radius: 4px;
-  padding: 15px 15px;
-  transition: all 0.2s ease-in-out;
-
-  -webkit-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-  -moz-box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
-  box-shadow: 3px 3px 5px 0px rgba(104, 101, 101, 0.75);
-}
-.card:hover{
-  transform: translateY(-5px);
-}
-
 .card-tags{
   margin-top: 15px;
+  transition: all 0.3s ease-in-out;
 }
 .card-tag{
   padding: 8px;
   border-radius: 4px;
+}
+.card-tag:hover{
+  opacity: 0.8;
+}
+.card-tag:active{
+  border: 2px solid white;
 }
 .card-tag:not(:first-child) {
   margin-left: 5px;
@@ -43,10 +18,6 @@
 .card-tag.background-color-water{
   color: white;
   background-color: #81c1f5;
-}
-.card-tag.background-color-dragon{
-  color: white;
-  background-color: #0f2638;
 }
 .card-tag.background-color-grass{
   color: white;
@@ -111,37 +82,4 @@
 .card-tag.background-color-fire{
   color: white;
   background-color: red;
-}
-
-@media (max-width: 1168px) {
-  .card{
-    width: 30vw;
-  }
-}
-@media (max-width: 772px) {
-  .card{
-    width: 200px;
-  }
-}
-@media (max-width: 706px) {
-  .card{
-    width: 350px;
-    margin: 15px auto;
-  }
-  .card-img{
-    width: 300px;
-    height: 300px;
-  }
-}
-
-
-@media (max-width: 430px) {
-  .card{
-    width: 250px;
-    margin: 15px auto;
-  }
-  .card-img{
-    width: 150px;
-    height: 150px;
-  }
 }

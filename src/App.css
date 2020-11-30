@@ -43,7 +43,7 @@ button:focus{
 
 .container{
   padding: 10px 120px;
-  margin: auto;
+  margin: 0 auto;
   /* background: rgb(187,134,121);
   background: linear-gradient(0deg, rgba(187,134,121,1) 0%, rgba(253,187,45,1) 100%); */
   background-color: rgb(236, 236, 52, 0.4);
@@ -61,6 +61,13 @@ button:focus{
   width: 350px;
   height: 400px;
   /* margin: 0 auto; */
+}
+
+.cards{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 
 

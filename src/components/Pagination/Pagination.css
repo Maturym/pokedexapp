@@ -8,15 +8,20 @@ button{
   border-radius: 8px;
   margin-right: 15px;
   color: #945d5d;
+  margin-top: 10px;
   transition: all 0.5s ease-in-out;
 }
 .btn{
   margin-top: 10px;
   margin-bottom: 10px;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 }
 button:hover{
+  background-color: #bebebe;
+}
+.active{
   background-color: #bebebe;
 }
