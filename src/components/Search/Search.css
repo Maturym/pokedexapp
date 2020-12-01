@@ -72,7 +72,7 @@
   border-bottom-right-radius: 4px;
 }  */
 
-@media (max-width: 321px) {
+@media (max-width: 468px) {
   .search-form{
     flex-direction: column;
     margin-top: 10px;

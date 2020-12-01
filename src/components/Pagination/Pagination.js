@@ -26,7 +26,7 @@ export default function Pagination({ postsPerPage, totalPosts, currentPage,
 
   return (
     <div className="btn">
-    {window.location.pathname.includes('/pokedexapp/') ? 
+    {window.location.pathname.includes('/pokedexapp') ? 
       currentPage !== 1? <button onClick={first}>First</button>: null : null
     }
     {pageNumbers.map(number => (
@@ -50,7 +50,7 @@ export default function Pagination({ postsPerPage, totalPosts, currentPage,
            {number}
        </button>
     ))}
-    {window.location.pathname.includes('/pokedexapp/') ? 
+    {window.location.pathname.includes('/pokedexapp') ? 
       currentPage !== Math.ceil(totalPosts / postsPerPage)? 
     <button onClick={last}>Last</button>: null : null
     }
