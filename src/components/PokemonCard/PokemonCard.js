@@ -29,7 +29,7 @@ const PokemonCard = ({ pokemonInfo, filterByType, filterByLocation }) => {
        setAbility(sliced);
  
      } else if (document.documentElement.clientWidth <= 320) {
-         sliced = englishElem.effect.slice(0,200);
+         sliced = englishElem.effect.slice(0,100);
  
          if (sliced.length < englishElem.effect.length) {
          sliced += '...';
