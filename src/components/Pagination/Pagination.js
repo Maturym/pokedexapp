@@ -26,7 +26,7 @@ export default function Pagination({ postsPerPage, totalPosts, currentPage,
 
   return (
     <div className="btn">
-    {window.location.pathname === '/pokedexapp' ? 
+    {window.location.pathname.includes('/pokedexapp/') ? 
       currentPage !== 1? <button onClick={first}>First</button>: null : null
     }
     {pageNumbers.map(number => (
@@ -37,7 +37,7 @@ export default function Pagination({ postsPerPage, totalPosts, currentPage,
         
         paginate(number);
 
-        if (window.location.pathname === '/pokedexapp') {
+        if (window.location.pathname.includes('/pokedexapp/')) {
           fetchPokemonData(`https://pokeapi.co/api/v2/pokemon?offset=${indexOfFirstPost}&limit=${postsPerPage}`);
         }
 
@@ -50,7 +50,7 @@ export default function Pagination({ postsPerPage, totalPosts, currentPage,
            {number}
        </button>
     ))}
-    {window.location.pathname === '/pokedexapp' ? 
+    {window.location.pathname.includes('/pokedexapp/') ? 
       currentPage !== Math.ceil(totalPosts / postsPerPage)? 
     <button onClick={last}>Last</button>: null : null
     }

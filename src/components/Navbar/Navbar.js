@@ -10,7 +10,7 @@ export default function Navbar({updateData}) {
         <ul className="header__nav">
           <li className="nav__link">
             <Link 
-              to = "/pokedexapp"
+              to = "/pokedexapp/"
               onClick={() => {
                 updateData()
               }}>

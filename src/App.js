@@ -198,7 +198,7 @@ function App() {
           />
             <Switch>            
               <Route 
-                exact path='/pokedexapp'
+                exact path='/pokedexapp/'
                 render ={() => 
                         <div className="main-container">
                           <Pagination currentPage={currentPage} postsPerPage={postsPerPage} 
